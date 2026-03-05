@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doby Temp Mail</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#4facfe,#00f2fe);
+transition:0.4s;
+}
+
+.dark{
+background:#0f172a;
+}
+
+.container{
+width:95%;
+max-width:950px;
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(20px);
+border-radius:25px;
+padding:30px;
+box-shadow:0 20px 60px rgba(0,0,0,0.3);
+color:white;
+}
+
+.dark .container{
+background:#1e293b;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+}
+
+h1{
+font-size:28px;
+font-weight:600;
+}
+
+.toggle{
+background:white;
+border:none;
+padding:8px 18px;
+border-radius:30px;
+cursor:pointer;
+font-weight:600;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+.email-box{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:15px;
+}
+
+.email-box input{
+flex:1;
+padding:14px;
+border:none;
+border-radius:12px;
+font-size:16px;
+}
+
+.btn{
+display:flex;
+align-items:center;
+gap:6px;
+border:none;
+padding:12px 16px;
+border-radius:12px;
+font-weight:600;
+cursor:pointer;
+color:white;
+box-shadow:0 8px 20px rgba(0,0,0,0.25);
+transition:0.25s;
+}
+
+.btn:hover{
+transform:translateY(-3px);
+}
+
+.copy{background:linear-gradient(45deg,#22c55e,#16a34a);}
+.refresh{background:linear-gradient(45deg,#3b82f6,#2563eb);}
+.delete{background:linear-gradient(45deg,#ef4444,#dc2626);}
+
+.timer{
+margin-bottom:15px;
+font-size:14px;
+opacity:0.9;
+}
+
+.inbox{
+background:white;
+color:black;
+border-radius:15px;
+padding:15px;
+max-height:250px;
+overflow:auto;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.dark .inbox{
+background:#0f172a;
+color:white;
+}
+
+.mail{
+padding:10px;
+border-bottom:1px solid #ddd;
+cursor:pointer;
+transition:0.2s;
+}
+
+.mail:hover{
+background:#f1f5f9;
+}
+
+.dark .mail:hover{
+background:#1e293b;
+}
+
+.message{
+margin-top:15px;
+background:white;
+color:black;
+border-radius:15px;
+padding:15px;
+min-height:120px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.dark .message{
+background:#0f172a;
+color:white;
+}
+
+footer{
+text-align:center;
+margin-top:10px;
+font-size:12px;
+opacity:0.7;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+<h1>Doby Temp Mail</h1>
+<button class="toggle" onclick="toggleDark()">🌙 Mode</button>
+</header>
+
+<div class="email-box">
+
+<input id="email" readonly>
+
+<button class="btn copy" onclick="copyEmail()">📋 Copy</button>
+
+<button class="btn refresh" onclick="loadInbox()">🔄 Refresh</button>
+
+<button class="btn delete" onclick="newEmail()">❌ Delete</button>
+
+</div>
+
+<div class="timer">
+Email Age: <span id="age">0</span> sec
+</div>
+
+<div class="inbox" id="inbox">
+No messages yet
+</div>
+
+<div class="message" id="message">
+Select message to read
+</div>
+
+<footer>
+Doby Temporary Mail Service
+</footer>
+
+</div>
+
+<script>
+
+let email="";
+let login="";
+let domain="";
+let lastCount=0;
+let startTime=0;
+
+const domains=["1secmail.com","1secmail.org","1secmail.net"];
+
+function generateEmail(){
+
+let names=["doby","temp","mail","ghost","fast"];
+
+login=names[Math.floor(Math.random()*names.length)]+Math.floor(Math.random()*9999);
+
+domain=domains[Math.floor(Math.random()*domains.length)];
+
+email=login+"@"+domain;
+
+startTime=Date.now();
+
+localStorage.setItem("tempEmail",email);
+localStorage.setItem("startTime",startTime);
+
+}
+
+function loadSaved(){
+
+let saved=localStorage.getItem("tempEmail");
+
+if(saved){
+
+email=saved;
+login=email.split("@")[0];
+domain=email.split("@")[1];
+startTime=parseInt(localStorage.getItem("startTime"));
+
+}else{
+
+generateEmail();
+
+}
+
+document.getElementById("email").value=email;
+
+}
+
+function newEmail(){
+
+localStorage.removeItem("tempEmail");
+
+generateEmail();
+
+document.getElementById("email").value=email;
+
+loadInbox();
+
+}
+
+function copyEmail(){
+
+navigator.clipboard.writeText(email);
+
+alert("Email Copied");
+
+}
+
+function toggleDark(){
+
+document.body.classList.toggle("dark");
+
+}
+
+function updateTimer(){
+
+let seconds=Math.floor((Date.now()-startTime)/1000);
+
+document.getElementById("age").innerText=seconds;
+
+}
+
+function loadInbox(){
+
+fetch(`https://www.1secmail.com/api/v1/?action=getMessages&login=${login}&domain=${domain}`)
+.then(res=>res.json())
+.then(data=>{
+
+let inbox=document.getElementById("inbox");
+
+inbox.innerHTML="";
+
+if(data.length==0){
+
+inbox.innerHTML="No messages";
+
+return;
+
+}
+
+if(data.length>lastCount){
+
+alert("New Email Received!");
+
+}
+
+lastCount=data.length;
+
+data.forEach(mail=>{
+
+let div=document.createElement("div");
+
+div.className="mail";
+
+div.innerHTML=`${mail.from}<br><b>${mail.subject}</b>`;
+
+div.onclick=()=>openMail(mail.id);
+
+inbox.appendChild(div);
+
+});
+
+});
+
+}
+
+function openMail(id){
+
+fetch(`https://www.1secmail.com/api/v1/?action=readMessage&login=${login}&domain=${domain}&id=${id}`)
+.then(res=>res.json())
+.then(data=>{
+
+document.getElementById("message").innerHTML=`
+
+<b>From:</b> ${data.from}<br><br>
+<b>Subject:</b> ${data.subject}<br><br>
+${data.htmlBody || data.textBody}
+
+`;
+
+});
+
+}
+
+loadSaved();
+
+setInterval(loadInbox,5000);
+
+setInterval(updateTimer,1000);
+
+document.getElementById("email").value=email;
+
+loadInbox();
+
+</script>
+
+</body>
+</html>
