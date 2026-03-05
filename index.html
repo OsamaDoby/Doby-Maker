@@ -2,9 +2,13 @@
 
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Doby Temp Mail</title>
+
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/561/561127.png">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -23,7 +27,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 background:linear-gradient(135deg,#4facfe,#00f2fe);
-transition:0.4s;
+transition:.4s;
 }
 
 .dark{
@@ -31,39 +35,53 @@ background:#0f172a;
 }
 
 .container{
+
 width:95%;
-max-width:950px;
-background:rgba(255,255,255,0.15);
-backdrop-filter:blur(20px);
+max-width:1000px;
+background:rgba(255,255,255,.15);
+backdrop-filter:blur(25px);
 border-radius:25px;
 padding:30px;
-box-shadow:0 20px 60px rgba(0,0,0,0.3);
+box-shadow:0 20px 60px rgba(0,0,0,.3);
 color:white;
+
+animation:fade .6s ease;
 }
 
-.dark .container{
-background:#1e293b;
+@keyframes fade{
+from{opacity:0;transform:translateY(15px)}
+to{opacity:1}
 }
 
 header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:25px;
+margin-bottom:20px;
 }
 
-h1{
-font-size:28px;
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:26px;
 font-weight:600;
 }
 
+.logo span{
+font-size:32px;
+}
+
 .toggle{
+
 background:white;
+color:black;
 border:none;
 padding:8px 18px;
 border-radius:30px;
 cursor:pointer;
 font-weight:600;
+
 }
 
 .email-box{
@@ -74,14 +92,17 @@ margin-bottom:15px;
 }
 
 .email-box input{
+
 flex:1;
 padding:14px;
 border:none;
 border-radius:12px;
 font-size:16px;
+
 }
 
 .btn{
+
 display:flex;
 align-items:center;
 gap:6px;
@@ -91,17 +112,26 @@ border-radius:12px;
 font-weight:600;
 cursor:pointer;
 color:white;
-box-shadow:0 8px 20px rgba(0,0,0,0.25);
-transition:0.25s;
+box-shadow:0 8px 20px rgba(0,0,0,.25);
+transition:.25s;
+
 }
 
 .btn:hover{
 transform:translateY(-3px);
 }
 
-.copy{background:linear-gradient(45deg,#22c55e,#16a34a);}
-.refresh{background:linear-gradient(45deg,#3b82f6,#2563eb);}
-.delete{background:linear-gradient(45deg,#ef4444,#dc2626);}
+.copy{
+background:linear-gradient(45deg,#22c55e,#16a34a);
+}
+
+.refresh{
+background:linear-gradient(45deg,#3b82f6,#2563eb);
+}
+
+.delete{
+background:linear-gradient(45deg,#ef4444,#dc2626);
+}
 
 .timer{
 margin-bottom:15px;
@@ -109,12 +139,14 @@ font-size:14px;
 }
 
 .inbox{
+
 background:white;
 color:black;
 border-radius:15px;
 padding:15px;
 max-height:250px;
 overflow:auto;
+
 }
 
 .dark .inbox{
@@ -123,9 +155,12 @@ color:white;
 }
 
 .mail{
+
 padding:10px;
 border-bottom:1px solid #ddd;
 cursor:pointer;
+transition:.2s;
+
 }
 
 .mail:hover{
@@ -137,12 +172,14 @@ background:#1e293b;
 }
 
 .message{
+
 margin-top:15px;
 background:white;
 color:black;
 border-radius:15px;
 padding:15px;
 min-height:120px;
+
 }
 
 .dark .message{
@@ -151,10 +188,12 @@ color:white;
 }
 
 footer{
+
 text-align:center;
-margin-top:10px;
+margin-top:15px;
 font-size:12px;
-opacity:0.7;
+opacity:.7;
+
 }
 
 </style>
@@ -166,8 +205,14 @@ opacity:0.7;
 <div class="container">
 
 <header>
-<h1>Doby Temp Mail</h1>
+
+<div class="logo">
+<span>📨</span>
+Doby Temp Mail
+</div>
+
 <button class="toggle" onclick="toggleDark()">🌙 Mode</button>
+
 </header>
 
 <div class="email-box">
@@ -183,19 +228,27 @@ opacity:0.7;
 </div>
 
 <div class="timer">
+
 Email Age: <span id="age">0</span> sec
+
 </div>
 
 <div class="inbox" id="inbox">
+
 No messages yet
+
 </div>
 
 <div class="message" id="message">
+
 Select message to read
+
 </div>
 
 <footer>
+
 Doby Temporary Mail Service
+
 </footer>
 
 </div>
@@ -308,7 +361,7 @@ return;
 
 if(data.length>lastCount){
 
-console.log("New Email Received");
+alert("New Email Received!");
 
 }
 
