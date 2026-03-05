@@ -64,7 +64,6 @@ padding:8px 18px;
 border-radius:30px;
 cursor:pointer;
 font-weight:600;
-box-shadow:0 5px 15px rgba(0,0,0,0.2);
 }
 
 .email-box{
@@ -107,7 +106,6 @@ transform:translateY(-3px);
 .timer{
 margin-bottom:15px;
 font-size:14px;
-opacity:0.9;
 }
 
 .inbox{
@@ -117,7 +115,6 @@ border-radius:15px;
 padding:15px;
 max-height:250px;
 overflow:auto;
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
 .dark .inbox{
@@ -129,7 +126,6 @@ color:white;
 padding:10px;
 border-bottom:1px solid #ddd;
 cursor:pointer;
-transition:0.2s;
 }
 
 .mail:hover{
@@ -147,7 +143,6 @@ color:black;
 border-radius:15px;
 padding:15px;
 min-height:120px;
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
 .dark .message{
@@ -247,6 +242,9 @@ startTime=parseInt(localStorage.getItem("startTime"));
 
 generateEmail();
 
+login=email.split("@")[0];
+domain=email.split("@")[1];
+
 }
 
 document.getElementById("email").value=email;
@@ -258,6 +256,9 @@ function newEmail(){
 localStorage.removeItem("tempEmail");
 
 generateEmail();
+
+login=email.split("@")[0];
+domain=email.split("@")[1];
 
 document.getElementById("email").value=email;
 
@@ -307,7 +308,7 @@ return;
 
 if(data.length>lastCount){
 
-alert("New Email Received!");
+console.log("New Email Received");
 
 }
 
@@ -351,16 +352,15 @@ ${data.htmlBody || data.textBody}
 
 loadSaved();
 
-setInterval(loadInbox,2000);
-
-setInterval(updateTimer,1000);
-
 document.getElementById("email").value=email;
 
 loadInbox();
+
+setInterval(loadInbox,3000);
+
+setInterval(updateTimer,1000);
 
 </script>
 
 </body>
 </html>
-
